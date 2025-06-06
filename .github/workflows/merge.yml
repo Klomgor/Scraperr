@@ -15,8 +15,11 @@ jobs:
     version:
         needs: tests
         uses: ./.github/workflows/version.yml
+        secrets:
+            git_token: ${{ secrets.GPAT_TOKEN }}
 
     build-and-deploy:
+        if: needs.version.outputs.version_bump == 'true'
         needs: version
         uses: ./.github/workflows/docker-image.yml
         secrets:
